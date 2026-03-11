@@ -116,6 +116,24 @@ app.get("/patients", async (req,res)=>{
   }
 });
 
+app.get("/patients/search", async (req,res)=>{
+  try{
+
+    const name = req.query.name;
+
+    const patients = await Patient.find({
+      fullName: { $regex: name, $options: "i" }
+    });
+
+    res.status(200).json(patients);
+
+  }catch(error){
+
+    res.status(500).json({message:error.message});
+
+  }
+});
+
 /* ---------------- GET Patient by ID ---------------- */
 
 app.get("/patients/:id", async (req,res)=>{
